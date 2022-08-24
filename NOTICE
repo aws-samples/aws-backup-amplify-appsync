@@ -1,0 +1,12 @@
+AWS IoT Greengrass Private Networking with AWS PrivateLink
+
+Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
+
+**********************
+THIRD PARTY COMPONENTS
+**********************
+This software includes third party software subject to the following copyrights:
+
+boto3: Apache License Version 2.0
+cdk: Apache License Version 2.0
+cdk-nag: Apache License Version 2.0

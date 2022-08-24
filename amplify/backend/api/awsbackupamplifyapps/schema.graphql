@@ -1,0 +1,19 @@
+type Category @model @auth(rules: [
+  { allow: private, operations: [read]},
+  { allow: owner }
+]) {
+  id: ID!
+  name: String!
+  items: [Item] @hasMany
+}
+
+type Item @model @auth(rules: [
+  { allow: private, operations: [read]},
+  { allow: owner }
+]) {
+  id: ID!
+  title: String!
+  blog: Category @belongsTo
+}
+
+
