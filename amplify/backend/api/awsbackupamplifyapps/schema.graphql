@@ -12,8 +12,9 @@ type Item @model @auth(rules: [
   { allow: owner }
 ]) {
   id: ID!
-  title: String!
-  blog: Category @belongsTo
+  name: String!
+  headline: String
+  category: Category @belongsTo
 }
 
 

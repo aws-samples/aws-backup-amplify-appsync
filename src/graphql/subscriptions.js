@@ -9,8 +9,9 @@ export const onCreateCategory = /* GraphQL */ `
       items {
         items {
           id
-          title
-          blog {
+          name
+          headline
+          category {
             id
             name
             createdAt
@@ -38,8 +39,9 @@ export const onUpdateCategory = /* GraphQL */ `
       items {
         items {
           id
-          title
-          blog {
+          name
+          headline
+          category {
             id
             name
             createdAt
@@ -67,8 +69,9 @@ export const onDeleteCategory = /* GraphQL */ `
       items {
         items {
           id
-          title
-          blog {
+          name
+          headline
+          category {
             id
             name
             createdAt
@@ -92,14 +95,16 @@ export const onCreateItem = /* GraphQL */ `
   subscription OnCreateItem($owner: String) {
     onCreateItem(owner: $owner) {
       id
-      title
-      blog {
+      name
+      headline
+      category {
         id
         name
         items {
           items {
             id
-            title
+            name
+            headline
             createdAt
             updatedAt
             categoryItemsId
@@ -122,14 +127,16 @@ export const onUpdateItem = /* GraphQL */ `
   subscription OnUpdateItem($owner: String) {
     onUpdateItem(owner: $owner) {
       id
-      title
-      blog {
+      name
+      headline
+      category {
         id
         name
         items {
           items {
             id
-            title
+            name
+            headline
             createdAt
             updatedAt
             categoryItemsId
@@ -152,14 +159,16 @@ export const onDeleteItem = /* GraphQL */ `
   subscription OnDeleteItem($owner: String) {
     onDeleteItem(owner: $owner) {
       id
-      title
-      blog {
+      name
+      headline
+      category {
         id
         name
         items {
           items {
             id
-            title
+            name
+            headline
             createdAt
             updatedAt
             categoryItemsId

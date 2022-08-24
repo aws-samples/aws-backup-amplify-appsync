@@ -12,8 +12,9 @@ export const createCategory = /* GraphQL */ `
       items {
         items {
           id
-          title
-          blog {
+          name
+          headline
+          category {
             id
             name
             createdAt
@@ -44,8 +45,9 @@ export const updateCategory = /* GraphQL */ `
       items {
         items {
           id
-          title
-          blog {
+          name
+          headline
+          category {
             id
             name
             createdAt
@@ -76,8 +78,9 @@ export const deleteCategory = /* GraphQL */ `
       items {
         items {
           id
-          title
-          blog {
+          name
+          headline
+          category {
             id
             name
             createdAt
@@ -104,14 +107,16 @@ export const createItem = /* GraphQL */ `
   ) {
     createItem(input: $input, condition: $condition) {
       id
-      title
-      blog {
+      name
+      headline
+      category {
         id
         name
         items {
           items {
             id
-            title
+            name
+            headline
             createdAt
             updatedAt
             categoryItemsId
@@ -137,14 +142,16 @@ export const updateItem = /* GraphQL */ `
   ) {
     updateItem(input: $input, condition: $condition) {
       id
-      title
-      blog {
+      name
+      headline
+      category {
         id
         name
         items {
           items {
             id
-            title
+            name
+            headline
             createdAt
             updatedAt
             categoryItemsId
@@ -170,14 +177,16 @@ export const deleteItem = /* GraphQL */ `
   ) {
     deleteItem(input: $input, condition: $condition) {
       id
-      title
-      blog {
+      name
+      headline
+      category {
         id
         name
         items {
           items {
             id
-            title
+            name
+            headline
             createdAt
             updatedAt
             categoryItemsId

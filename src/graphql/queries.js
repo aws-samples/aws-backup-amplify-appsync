@@ -9,8 +9,9 @@ export const getCategory = /* GraphQL */ `
       items {
         items {
           id
-          title
-          blog {
+          name
+          headline
+          category {
             id
             name
             createdAt
@@ -43,7 +44,8 @@ export const listCategories = /* GraphQL */ `
         items {
           items {
             id
-            title
+            name
+            headline
             createdAt
             updatedAt
             categoryItemsId
@@ -63,14 +65,16 @@ export const getItem = /* GraphQL */ `
   query GetItem($id: ID!) {
     getItem(id: $id) {
       id
-      title
-      blog {
+      name
+      headline
+      category {
         id
         name
         items {
           items {
             id
-            title
+            name
+            headline
             createdAt
             updatedAt
             categoryItemsId
@@ -98,8 +102,9 @@ export const listItems = /* GraphQL */ `
     listItems(filter: $filter, limit: $limit, nextToken: $nextToken) {
       items {
         id
-        title
-        blog {
+        name
+        headline
+        category {
           id
           name
           items {
