@@ -6,40 +6,50 @@ import "@aws-amplify/ui-vue/styles.css";
 
 <template>
   <authenticator>
-    <template v-slot="{ user }">
+    <template v-slot="{ user, signOut }">
       <div class="container">
-        <div class="row">
-          <div class="col">
-            <h1>Hello {{ user.username }}!</h1>
+        <header class="p-3 text-bg-dark">
+          <div class="row">
+            <div class="col-10"><img src="backup.png" /></div>
+
+            <div class="col-2 align-items-end justify-content-end">
+              <h5>Hello {{ user.username }}!</h5>
+              <button class="btn btn-link" @click="signOut">Sign Out</button>
+            </div>
           </div>
-          <div class="col">
-            <br /><button @click="signOut">Sign Out</button>
-          </div>
-        </div>
+        </header>
         <div class="row">
-          <div class="col">
-            <div class="mb-2">
+          <div class="col-4">
+            <form id="categories" class="row g-3">
               <h3>Create a Category</h3>
-              <label for="category-name">Enter Category</label>
+              <label for="category-name" class="col-form-label"
+                >Enter Category</label
+              >
               <input
                 type="text"
                 v-model="category.name"
                 placeholder="Category Name"
                 id="category-name"
+                class="form-control"
               />
-            </div>
-            <div class="mb-2">
               <input
                 type="button"
                 value="Create Category"
                 @click="createNewCategory(this.category)"
+                class="form-control btn btn-primary"
               />
               <hr />
-            </div>
-            <div class="mb-2">
+            </form>
+            <form id="items" class="row g-3">
               <h3>Add items</h3>
-              <label for="category">Select Category</label>
-              <select v-model="item.categoryItemsId" id="category">
+              <label for="category" class="col-form-label"
+                >Select Category</label
+              >
+              <select
+                v-model="item.categoryItemsId"
+                id="category"
+                class="form-control"
+              >
                 <option disabled value="">Choose a category</option>
                 <option
                   v-for="category in categories"
@@ -49,26 +59,23 @@ import "@aws-amplify/ui-vue/styles.css";
                   {{ category.name }}
                 </option>
               </select>
-            </div>
-            <div class="mb-2">
               <label for="item-name">Item Name</label>
-
               <input
                 type="text"
                 v-model="item.name"
                 placeholder="Name"
                 id="item-name"
+                class="form-control"
               />
-            </div>
-            <div class="mb-2">
               <input
                 type="button"
                 value="Add Item"
                 @click="createNewItem(this.item)"
+                class="form-control btn btn-primary"
               />
-            </div>
+            </form>
           </div>
-
+          <div class="col-1"></div>
           <!-- right side -->
           <div class="col">
             <div
@@ -134,3 +141,22 @@ export default {
   },
 };
 </script>
+
+<style scoped>
+li {
+  margin-left: 5%;
+}
+header {
+  margin-bottom: 3%;
+}
+h3 form {
+  margin-top: 3%;
+}
+hr {
+  color: #ffffff;
+}
+img {
+  width: 100px;
+  height: 100px;
+}
+</style>
