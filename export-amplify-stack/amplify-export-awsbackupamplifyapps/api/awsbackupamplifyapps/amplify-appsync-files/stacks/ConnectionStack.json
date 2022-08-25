@@ -1,0 +1,238 @@
+{
+  "Resources": {
+    "Categoryitemsauth0FunctionCategoryitemsauth0FunctionAppSyncFunctionB74E8FB7": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name"
+        },
+        "FunctionVersion": "2018-05-29",
+        "Name": "Categoryitemsauth0Function",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Category.items.auth.1.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson({})"
+      }
+    },
+    "CategoryItemsDataResolverFnCategoryItemsDataResolverFnAppSyncFunctionD60FE321": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackItemNestedStackItemNestedStackResource1B980173OutputstransformerrootstackItemItemDataSource2ED11EBBName"
+        },
+        "FunctionVersion": "2018-05-29",
+        "Name": "CategoryItemsDataResolverFn",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Category.items.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Category.items.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "CategoryitemsResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "items",
+        "TypeName": "Category",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Categoryitemsauth0FunctionCategoryitemsauth0FunctionAppSyncFunctionB74E8FB7",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "CategoryItemsDataResolverFnCategoryItemsDataResolverFnAppSyncFunctionD60FE321",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Category\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"items\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackItemNestedStackItemNestedStackResource1B980173OutputstransformerrootstackItemItemTable2E83B534Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    },
+    "ItemCategoryDataResolverFnItemCategoryDataResolverFnAppSyncFunctionFBEDD21F": {
+      "Type": "AWS::AppSync::FunctionConfiguration",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "DataSourceName": {
+          "Ref": "referencetotransformerrootstackCategoryNestedStackCategoryNestedStackResourceD9545530OutputstransformerrootstackCategoryCategoryDataSource9AF16D52Name"
+        },
+        "FunctionVersion": "2018-05-29",
+        "Name": "ItemCategoryDataResolverFn",
+        "RequestMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Item.category.req.vtl"
+            ]
+          ]
+        },
+        "ResponseMappingTemplateS3Location": {
+          "Fn::Join": [
+            "",
+            [
+              "s3://",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentBucket7592718ARef"
+              },
+              "/",
+              {
+                "Ref": "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref"
+              },
+              "/resolvers/Item.category.res.vtl"
+            ]
+          ]
+        }
+      }
+    },
+    "ItemcategoryResolver": {
+      "Type": "AWS::AppSync::Resolver",
+      "Properties": {
+        "ApiId": {
+          "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+        },
+        "FieldName": "category",
+        "TypeName": "Item",
+        "Kind": "PIPELINE",
+        "PipelineConfig": {
+          "Functions": [
+            {
+              "Fn::GetAtt": [
+                "Categoryitemsauth0FunctionCategoryitemsauth0FunctionAppSyncFunctionB74E8FB7",
+                "FunctionId"
+              ]
+            },
+            {
+              "Fn::GetAtt": [
+                "ItemCategoryDataResolverFnItemCategoryDataResolverFnAppSyncFunctionFBEDD21F",
+                "FunctionId"
+              ]
+            }
+          ]
+        },
+        "RequestMappingTemplate": {
+          "Fn::Join": [
+            "",
+            [
+              "$util.qr($ctx.stash.put(\"typeName\", \"Item\"))\n$util.qr($ctx.stash.put(\"fieldName\", \"category\"))\n$util.qr($ctx.stash.put(\"conditions\", []))\n$util.qr($ctx.stash.put(\"metadata\", {}))\n$util.qr($ctx.stash.metadata.put(\"dataSourceType\", \"AMAZON_DYNAMODB\"))\n$util.qr($ctx.stash.metadata.put(\"apiId\", \"",
+              {
+                "Ref": "referencetotransformerrootstackGraphQLAPI20497F53ApiId"
+              },
+              "\"))\n$util.qr($ctx.stash.put(\"tableName\", \"",
+              {
+                "Ref": "referencetotransformerrootstackCategoryNestedStackCategoryNestedStackResourceD9545530OutputstransformerrootstackCategoryCategoryTable44E1EFF7Ref"
+              },
+              "\"))\n$util.toJson({})"
+            ]
+          ]
+        },
+        "ResponseMappingTemplate": "$util.toJson($ctx.prev.result)"
+      }
+    }
+  },
+  "Parameters": {
+    "referencetotransformerrootstackGraphQLAPI20497F53ApiId": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackGraphQLAPINONEDS2BA9D1C8Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentBucket7592718ARef": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackS3DeploymentRootKeyA71EA735Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackItemNestedStackItemNestedStackResource1B980173OutputstransformerrootstackItemItemDataSource2ED11EBBName": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackItemNestedStackItemNestedStackResource1B980173OutputstransformerrootstackItemItemTable2E83B534Ref": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackCategoryNestedStackCategoryNestedStackResourceD9545530OutputstransformerrootstackCategoryCategoryDataSource9AF16D52Name": {
+      "Type": "String"
+    },
+    "referencetotransformerrootstackCategoryNestedStackCategoryNestedStackResourceD9545530OutputstransformerrootstackCategoryCategoryTable44E1EFF7Ref": {
+      "Type": "String"
+    }
+  }
+}

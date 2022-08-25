@@ -1,0 +1,213 @@
+
+type Category {
+  id: ID!
+  name: String!
+  items(filter: ModelItemFilterInput, sortDirection: ModelSortDirection, limit: Int, nextToken: String): ModelItemConnection
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  owner: String
+}
+
+type Item {
+  id: ID!
+  name: String!
+  headline: String
+  category: Category
+  createdAt: AWSDateTime!
+  updatedAt: AWSDateTime!
+  categoryItemsId: ID
+  owner: String
+}
+
+input ModelStringInput {
+  ne: String
+  eq: String
+  le: String
+  lt: String
+  ge: String
+  gt: String
+  contains: String
+  notContains: String
+  between: [String]
+  beginsWith: String
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+input ModelIntInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelFloatInput {
+  ne: Float
+  eq: Float
+  le: Float
+  lt: Float
+  ge: Float
+  gt: Float
+  between: [Float]
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelBooleanInput {
+  ne: Boolean
+  eq: Boolean
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+}
+
+input ModelIDInput {
+  ne: ID
+  eq: ID
+  le: ID
+  lt: ID
+  ge: ID
+  gt: ID
+  contains: ID
+  notContains: ID
+  between: [ID]
+  beginsWith: ID
+  attributeExists: Boolean
+  attributeType: ModelAttributeTypes
+  size: ModelSizeInput
+}
+
+enum ModelAttributeTypes {
+  binary
+  binarySet
+  bool
+  list
+  map
+  number
+  numberSet
+  string
+  stringSet
+  _null
+}
+
+input ModelSizeInput {
+  ne: Int
+  eq: Int
+  le: Int
+  lt: Int
+  ge: Int
+  gt: Int
+  between: [Int]
+}
+
+enum ModelSortDirection {
+  ASC
+  DESC
+}
+
+type ModelCategoryConnection {
+  items: [Category]!
+  nextToken: String
+}
+
+input ModelCategoryFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  and: [ModelCategoryFilterInput]
+  or: [ModelCategoryFilterInput]
+  not: ModelCategoryFilterInput
+}
+
+type Query {
+  getCategory(id: ID!): Category
+  listCategories(filter: ModelCategoryFilterInput, limit: Int, nextToken: String): ModelCategoryConnection
+  getItem(id: ID!): Item
+  listItems(filter: ModelItemFilterInput, limit: Int, nextToken: String): ModelItemConnection
+}
+
+input ModelCategoryConditionInput {
+  name: ModelStringInput
+  and: [ModelCategoryConditionInput]
+  or: [ModelCategoryConditionInput]
+  not: ModelCategoryConditionInput
+}
+
+input CreateCategoryInput {
+  id: ID
+  name: String!
+}
+
+input UpdateCategoryInput {
+  id: ID!
+  name: String
+}
+
+input DeleteCategoryInput {
+  id: ID!
+}
+
+type Mutation {
+  createCategory(input: CreateCategoryInput!, condition: ModelCategoryConditionInput): Category
+  updateCategory(input: UpdateCategoryInput!, condition: ModelCategoryConditionInput): Category
+  deleteCategory(input: DeleteCategoryInput!, condition: ModelCategoryConditionInput): Category
+  createItem(input: CreateItemInput!, condition: ModelItemConditionInput): Item
+  updateItem(input: UpdateItemInput!, condition: ModelItemConditionInput): Item
+  deleteItem(input: DeleteItemInput!, condition: ModelItemConditionInput): Item
+}
+
+type Subscription {
+  onCreateCategory(owner: String): Category @aws_subscribe(mutations: ["createCategory"])
+  onUpdateCategory(owner: String): Category @aws_subscribe(mutations: ["updateCategory"])
+  onDeleteCategory(owner: String): Category @aws_subscribe(mutations: ["deleteCategory"])
+  onCreateItem(owner: String): Item @aws_subscribe(mutations: ["createItem"])
+  onUpdateItem(owner: String): Item @aws_subscribe(mutations: ["updateItem"])
+  onDeleteItem(owner: String): Item @aws_subscribe(mutations: ["deleteItem"])
+}
+
+type ModelItemConnection {
+  items: [Item]!
+  nextToken: String
+}
+
+input ModelItemFilterInput {
+  id: ModelIDInput
+  name: ModelStringInput
+  headline: ModelStringInput
+  and: [ModelItemFilterInput]
+  or: [ModelItemFilterInput]
+  not: ModelItemFilterInput
+  categoryItemsId: ModelIDInput
+}
+
+input ModelItemConditionInput {
+  name: ModelStringInput
+  headline: ModelStringInput
+  and: [ModelItemConditionInput]
+  or: [ModelItemConditionInput]
+  not: ModelItemConditionInput
+  categoryItemsId: ModelIDInput
+}
+
+input CreateItemInput {
+  id: ID
+  name: String!
+  headline: String
+  categoryItemsId: ID
+}
+
+input UpdateItemInput {
+  id: ID!
+  name: String
+  headline: String
+  categoryItemsId: ID
+}
+
+input DeleteItemInput {
+  id: ID!
+}
+

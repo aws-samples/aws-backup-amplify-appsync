@@ -1,0 +1,17 @@
+[
+  {
+    "category": "auth",
+    "resourceName": "awsbackupamplifyappsa6cbfed1",
+    "service": "Cognito"
+  },
+  {
+    "category": "api",
+    "resourceName": "awsbackupamplifyapps",
+    "service": "AppSync"
+  },
+  {
+    "category": "custom",
+    "resourceName": "backups",
+    "service": "customCDK"
+  }
+]
