@@ -29,11 +29,10 @@ amplify/logs
 amplify/mock-data
 amplify/backend/amplify-meta.json
 amplify/backend/.temp
-amplify/backend/custom/backups/
 build/
 dist/
-export/
 node_modules/
+
 aws-exports.js
 awsconfiguration.json
 amplifyconfiguration.json
@@ -44,3 +43,10 @@ amplifytools.xcconfig
 .secret-*
 **.sample
 #amplify-do-not-edit-end
+
+#cloners-remove-these-lines-begin
+amplify/   
+src/graphql
+#cloners-remove-these-lines-end
+
+export/
