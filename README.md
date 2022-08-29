@@ -25,12 +25,16 @@ cd aws-backup-amplify-appsync
 amplify configure
 ```
 
-Next lets install dependencies by running `npm install`. Now you can initialize your Amplify environment - run `amplify init` in your terminal. Answer the following questions when prompted:
+Now you can initialize your Amplify environment - run `amplify init` in your terminal. Answer the following questions when prompted:
 
-1. Do you want to use an existing environment? *No*
-1. Enter a name for the environment *awsbackups-dev*
+1. Enter a name for the project *awsbackupamplifyapps*
+1. Initialize the project with the above configuration? *Yes*
+1. Select the authentication method you want to use: (Use arrow keys) *AWS profile*
+1. Please choose the profile you want to use (Use arrow keys) *Select the profile you setup when you ran Amplify configure*
 
-Let's make sure the project runs locally by running `npm run serve`. You should see a default page for a Vue JS 3 application. Stop the server by entering 'command/ctrl + C'.
+Amplify will initialize your backend and create local resources in your project accordingly. 
+
+Next lets install dependencies by running `npm install` and let's make sure the project runs locally by running `npm run serve`. You should see a default page for a Vue JS 3 application. Stop the server by entering 'command/ctrl + C'.
 
 You are now ready to build Amplify Authentication with Cognito and add an AppSync API. 
 
