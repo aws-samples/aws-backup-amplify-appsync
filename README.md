@@ -34,10 +34,19 @@ Now you can initialize your Amplify environment - run `amplify init` in your ter
 
 Amplify will initialize your backend and create local resources in your project accordingly. 
 
-Next lets install dependencies by running `npm install` and let's make sure the project runs locally by running `npm run serve`. You should see a default page for a Vue JS 3 application. Stop the server by entering 'command/ctrl + C'.
+Next lets install dependencies by running `npm install`. You are now ready to build Amplify Authentication with Cognito and add an AppSync API. Note that the code in this repo for the API is already built into the Vue application so we won't run the server until we add these resources.
 
-You are now ready to build Amplify Authentication with Cognito and add an AppSync API. 
+Run `amplify add auth` and accept all the defaults. Then run `amplify push` to create your Cognito user pool in the cloud. 
+Now run `amplify add api` and choose *GraphQL* for the service. When presented with the GraphQL API create settings choose *Continue* followed by *Blank Schema*. When you are asked to edit the schema now, input *no*. Before we push this API to the cloud we are going to adjust the codegen depth for generated javascript queries. In your terminal input `amplify configure codegen` and choose *javascript*. Accept the default file name pattern and *Yes* to generation of all GraphQL operations. For maximum statement input *4*. Finally we need to updated your schema. Run the following commands and accepts the *Y* default for all GraphQL setting confirmations. 
 
+```
+cp graphql-schema/schema.graphql amplify/backend/api/awsbackupamplifyapps/schema.graphql
+amplify push
+```
+
+Once the push completes run `npm run serve`. You'll be presented with a Cognito login prompt for your application. Create a new user, confirm it, and login. Now you can create some data in your DynamoDB tables over GraphQL APIs. TODO
+
+Next add a custom resource TODO. Tomorrow you'll see backups in the vault. 
 
 ## Cleanup
 
