@@ -47,6 +47,7 @@ amplifytools.xcconfig
 #cloners-remove-these-lines-begin
 amplify/   
 src/graphql
+.graphqlconfig.yml
 #cloners-remove-these-lines-end
 
 export/
