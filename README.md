@@ -37,16 +37,22 @@ Amplify will initialize your backend and create local resources in your project 
 Next lets install dependencies by running `npm install`. You are now ready to build Amplify Authentication with Cognito and add an AppSync API. Note that the code in this repo for the API is already built into the Vue application so we won't run the server until we add these resources.
 
 Run `amplify add auth` and accept all the defaults. Then run `amplify push` to create your Cognito user pool in the cloud. 
-Now run `amplify add api` and choose *GraphQL* for the service. When presented with the GraphQL API create settings choose *Continue* followed by *Blank Schema*. When you are asked to edit the schema now, input *no*. Before we push this API to the cloud we are going to adjust the codegen depth for generated javascript queries. In your terminal input `amplify configure codegen` and choose *javascript*. Accept the default file name pattern and *Yes* to generation of all GraphQL operations. For maximum statement input *4*. Finally we need to updated your schema. Run the following commands and accepts the *Y* default for all GraphQL setting confirmations. 
+Now run `amplify add api` and choose *GraphQL* for the service. When presented with the GraphQL API create settings choose *Authorization modes* and then select *Amazon Cognito User Pool*, then choose *Continue*. When prompted to choose a schema template select *Blank Schema*. When you are asked if you'd like to edit the schema now, input *No*. Before we push this API to the cloud we need to adjust the query depth for generated javascript queries. In your terminal input `amplify configure codegen` and choose *javascript*. Accept the default file name pattern and *Yes* to generation of all GraphQL operations. For maximum statement input *4*. Finally we need to updated your schema. Run the following commands and accepts the *Y* default for all GraphQL setting confirmations. 
 
 ```
 cp graphql-schema/schema.graphql amplify/backend/api/awsbackupamplifyapps/schema.graphql
 amplify push
 ```
 
-Once the push completes run `npm run serve`. You'll be presented with a Cognito login prompt for your application. Create a new user, confirm it, and login. Now you can create some data in your DynamoDB tables over GraphQL APIs. TODO
+Once the push completes run `npm run serve`. You'll be presented with a Cognito login prompt for your application. Create a new user, confirm it, and login. Now you can create some data in your DynamoDB tables over GraphQL APIs. I setup a category for "Mythical Beasts" and added the items "Minotaur", "Cyclops", "Ogre", "Unicorn" and another category for "Programming Languages" and added the items "Java", "Python", "Ruby", "JavaScript"
 
-Next add a custom resource TODO. Tomorrow you'll see backups in the vault. 
+At this point we've leveraged Amplify and AppSync to quickly create a secure and scaleable application in the AWS cloud. However, without backups this application lacks the Failure Management component of the Well Architected Framework because it doesn't have backups configured. We'll use Amplify Custom Resources with CDK to configure AWS Backup.
+
+Stop your web server if it is still running, then in your terminal enter `amplify add custom` and choose AWS CDK. Enter the custom resource name *backups*. It will open the TypeScript CDK file in your IDE. Replace the content with below, then run `amplify push` to deploy this to the cloud. You will need to wait one day to see backups appear in your vault. 
+
+```
+
+```
 
 ## Cleanup
 
