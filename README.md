@@ -58,9 +58,6 @@ amplify push
 
 You have now successfully enabled backups for your Vue application built with Amplify, GraphhQL and DynamoDB. You can leave this application running overnight to see the daily backups show up in your AWS Backup Vault. 
 
-
-Additionally you will need to update 
-
 ## Cleanup
 
 To avoid accruing costs associated with this guide, you can remove your Amplify application and all associated resources by running `amplify delete`.
