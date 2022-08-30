@@ -40,7 +40,7 @@ Run `amplify add auth` and accept all the defaults. Then run `amplify push` to c
 Now run `amplify add api` and choose *GraphQL* for the service. When presented with the GraphQL API create settings choose *Authorization modes* and then select *Amazon Cognito User Pool*, then choose *Continue*. When prompted to choose a schema template select *Blank Schema*. When you are asked if you'd like to edit the schema now, input *No*. Before we push this API to the cloud we need to adjust the query depth for generated javascript queries. In your terminal input `amplify configure codegen` and choose *javascript*. Accept the default file name pattern and *Yes* to generation of all GraphQL operations. For maximum statement input *4*. Finally we need to updated your schema. Run the following commands and accepts the *Y* default for all GraphQL setting confirmations. 
 
 ```
-cp graphql-schema/schema.graphql amplify/backend/api/awsbackupamplifyapps/schema.graphql
+cp graphql-schema-and-cdk/schema.graphql amplify/backend/api/awsbackupamplifyapps/schema.graphql
 amplify push
 ```
 
@@ -48,11 +48,18 @@ Once the push completes run `npm run serve`. You'll be presented with a Cognito 
 
 At this point we've leveraged Amplify and AppSync to quickly create a secure and scaleable application in the AWS cloud. However, without backups this application lacks the Failure Management component of the Well Architected Framework because it doesn't have backups configured. We'll use Amplify Custom Resources with CDK to configure AWS Backup.
 
-Stop your web server if it is still running, then in your terminal enter `amplify add custom` and choose AWS CDK. Enter the custom resource name *backups*. It will open the TypeScript CDK file in your IDE. Replace the content with below, then run `amplify push` to deploy this to the cloud. You will need to wait one day to see backups appear in your vault. 
+Stop your web server if it is still running, then in your terminal enter `amplify add custom` and choose AWS CDK. Enter the custom resource name *backups*. Amplify will ask if you want to edit the stack now, press `Enter`. Next we'll update our CDK stack with one prepared for backups and push our changes to the cloud.
 
 ```
-
+cp graphql-schema-and-cdk/cdk-stack.ts amplify/backend/custom/backups/cdk-stack.ts
+cp graphql-schema-and-cdk/package.json amplify/backend/custom/backups/package.json
+amplify push
 ```
+
+You have now successfully enabled backups for your Vue application built with Amplify, GraphhQL and DynamoDB. You can leave this application running overnight to see the daily backups show up in your AWS Backup Vault. 
+
+
+Additionally you will need to update 
 
 ## Cleanup
 
