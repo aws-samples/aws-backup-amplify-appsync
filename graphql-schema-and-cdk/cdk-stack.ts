@@ -23,10 +23,7 @@ export class cdkStack extends cdk.Stack {
           backup.BackupPlanRule.monthly1Year()
         ],
         backupVault: new backup.BackupVault(this, 'Vault', {
-          backupVaultName: `amplify-appsync-dyanmodb-valut${AmplifyHelpers.getProjectInfo().envName}`,
-          encryptionKey: new kms.Key(this, `amplify-backup-key${AmplifyHelpers.getProjectInfo().envName}`, {
-            enableKeyRotation: true
-          })
+          backupVaultName: `amplify-appsync-dyanmodb-valut${AmplifyHelpers.getProjectInfo().envName}`
         })
       }
     );
