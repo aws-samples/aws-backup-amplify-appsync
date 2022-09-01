@@ -2,6 +2,7 @@ import * as cdk from '@aws-cdk/core';
 import * as AmplifyHelpers from '@aws-amplify/cli-extensibility-helper';
 import { AmplifyDependentResourcesAttributes } from '../../types/amplify-dependent-resources-ref';
 import * as backup from '@aws-cdk/aws-backup';
+import * as kms from '@aws-cdk/aws-kms';
 
 export class cdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps, amplifyResourceProps?: AmplifyHelpers.AmplifyResourceProps) {
@@ -13,15 +14,20 @@ export class cdkStack extends cdk.Stack {
     });
 
     const plan = new backup.BackupPlan(this,
-      "ReSkillDbBackupPlan",
+      "amplify-appsync-dyanmodb-plan",
       {
-        backupPlanName: `ReSkillBackupPlan${cdk.Fn.ref('env')}`,
+        backupPlanName: `amplify-appsync-dyanmodb-plan-${cdk.Fn.ref('env')}`,
         backupPlanRules: [
           backup.BackupPlanRule.daily(),
           backup.BackupPlanRule.weekly(),
           backup.BackupPlanRule.monthly1Year()
         ],
-        backupVault: new backup.BackupVault(this, 'Vault', { backupVaultName: `ReSkillBackupVault${AmplifyHelpers.getProjectInfo().envName}` })
+        backupVault: new backup.BackupVault(this, 'Vault', {
+          backupVaultName: `amplify-appsync-dyanmodb-valut${AmplifyHelpers.getProjectInfo().envName}`,
+          encryptionKey: new kms.Key(this, `amplify-backup-key${AmplifyHelpers.getProjectInfo().envName}`, {
+            enableKeyRotation: true
+          })
+        })
       }
     );
 
