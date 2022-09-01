@@ -15,7 +15,7 @@ To work with this project first be sure you are familiar with [AWS Amplify](http
 ## Project setup
 
 
-You will need to clone the repository for this project, move into project the directory and configure Amplify after you've installed the required CLI tooling. See the AWS Amplify Vue [ Getting Started](https://docs.amplify.aws/start/getting-started/installation/q/integration/vue/) Prerequisites section to understand how to setup your CLI environment and assign an IAM user. Your Amplify IAM user needs to have permissions policies that allow you to create Amplify applications and AWS Backup artifacts. To keep things simple you can add the AWS managed policies "AdministratorAccess-Amplify" and "AWSBackupFullAccess". For any real world deployments you will want to be more prescriptive and apply the principle of least privilege. 
+You will need to clone the repository for this project, move into project the directory and configure Amplify after you've installed the required CLI tooling. See the AWS Amplify Vue [ Getting Started](https://docs.amplify.aws/start/getting-started/installation/q/integration/vue/) Prerequisites section to understand how to setup your CLI environment and assign an IAM user. Your Amplify IAM user needs to have permissions policies that allow you to create Amplify applications and AWS Backup artifacts. To keep things simple you can add the AWS managed policies "AdministratorAccess-Amplify", "AWSKeyManagementServicePowerUser", and "AWSBackupFullAccess". For any real world deployments you will want to be more prescriptive and apply the principle of least privilege. 
 
 Run the following commands to get started once your CLI is ready:
 
