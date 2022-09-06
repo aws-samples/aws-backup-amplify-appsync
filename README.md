@@ -15,9 +15,28 @@ To work with this project first be sure you are familiar with [AWS Amplify](http
 ## Project setup
 
 
-You will need to clone the repository for this project, move into project the directory and configure Amplify after you've installed the required CLI tooling. See the AWS Amplify Vue [ Getting Started](https://docs.amplify.aws/start/getting-started/installation/q/integration/vue/) Prerequisites section to understand how to setup your CLI environment and assign an IAM user. Your Amplify IAM user needs to have permissions policies that allow you to create Amplify applications and AWS Backup artifacts. To keep things simple you can add the AWS managed policies "AdministratorAccess-Amplify", "AWSKeyManagementServicePowerUser", and "AWSBackupFullAccess". For any real world deployments you will want to be more prescriptive and apply the principle of least privilege. 
+You will need to clone the repository for this project, move into project the directory and configure Amplify after you've installed the required CLI tooling. See the AWS Amplify Vue [ Getting Started](https://docs.amplify.aws/start/getting-started/installation/q/integration/vue/) Prerequisites section to understand how to setup your CLI environment and assign an IAM user. Your Amplify IAM user needs to have permissions policies that allow you to create Amplify applications and AWS Backup artifacts. To keep things simple you can add the AWS managed policies "AdministratorAccess-Amplify", "AWSKeyManagementServicePowerUser", and "AWSBackupFullAccess". In addition you'll need to create an inline policy to allow for creating a KMS key policy to manage your vault encryption with a customer managed key. Replace ACCOUNT_ID with your 12 digit AWS account id. This inline policy allows your amplify user to apply key policy permissions to users in your account. 
 
-Run the following commands to get started once your CLI is ready:
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "iam:PutUserPolicy",
+                "iam:DeleteUserPolicy"
+            ],
+            "Resource": "arn:aws:iam::ACCOUNT_ID:user/*"
+        }
+    ]
+}
+```
+
+For any real world deployments you will want to be more prescriptive and apply the principle of least privilege. 
+
+Run the following commands to get started once you have created your user and your your CLI is ready:
 
 ```
 git clone git@ssh.gitlab.aws.dev:kschwa/aws-backup-amplify-appsync.git
@@ -56,7 +75,7 @@ cp graphql-schema-and-cdk/package.json amplify/backend/custom/backups/package.js
 amplify push
 ```
 
-You have now successfully enabled backups for your Vue application built with Amplify, GraphhQL and DynamoDB. You can leave this application running overnight to see the daily backups show up in your AWS Backup Vault. 
+Now open the file *amplify/backend/custom/backups/cdk-stack.ts* and modify line 17 (at the time of this writing) to replace YOUR_AMPLIFY_USERNAME with the username of your Amplify IAM user which you setup during initial configuration. You have now successfully enabled backups for your Vue application built with Amplify, GraphhQL and DynamoDB. You can leave this application running overnight to see the daily backups show up in your AWS Backup Vault. 
 
 ## Cleanup
 
