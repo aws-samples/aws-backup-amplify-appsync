@@ -14,7 +14,7 @@ export class cdkStack extends cdk.Stack {
       description: 'Current Amplify CLI env name',
     });
 
-    const cdkKeyAdmin = iam.User.fromUserName(this, 'cdkKeyAdmin', 'YOUR_AMPLIFY_USERNAME')
+    const cdkKeyAdmin = iam.User.fromUserName(this, 'cdkKeyAdmin', 'YOUR_AMPLIFY_USERNAME') // replace with your username
     const keyAdmin1 = iam.User.fromUserName(this, 'keyAdmin1', 'BackupAdmin1')
     const key = new kms.Key(this, `amplify-appsync-${AmplifyHelpers.getProjectInfo().envName}-key`, {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
