@@ -19,7 +19,7 @@ export class cdkStack extends cdk.Stack {
     const key = new kms.Key(this, `amplify-appsync-${AmplifyHelpers.getProjectInfo().envName}-key`, {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
       alias: `alias/amplify-appsync-${AmplifyHelpers.getProjectInfo().envName}-key`,
-      description: 'KMS key for encrypting the objects in an S3 bucket',
+      description: 'KMS key for encrypting the objects in your AWS Backup Vault',
       enableKeyRotation: false,
       admins: [cdkKeyAdmin, keyAdmin1]
     });
