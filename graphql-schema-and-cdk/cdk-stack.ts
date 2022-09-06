@@ -3,6 +3,7 @@ import * as AmplifyHelpers from '@aws-amplify/cli-extensibility-helper';
 import { AmplifyDependentResourcesAttributes } from '../../types/amplify-dependent-resources-ref';
 import * as backup from '@aws-cdk/aws-backup';
 import * as kms from '@aws-cdk/aws-kms';
+import * as iam from '@aws-cdk/aws-iam';
 
 export class cdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps, amplifyResourceProps?: AmplifyHelpers.AmplifyResourceProps) {
@@ -11,6 +12,16 @@ export class cdkStack extends cdk.Stack {
     new cdk.CfnParameter(this, 'env', {
       type: 'String',
       description: 'Current Amplify CLI env name',
+    });
+
+    const cdkKeyAdmin = iam.User.fromUserName(this, 'cdkKeyAdmin', 'amplify-east-kschwa')
+    const keyAdmin1 = iam.User.fromUserName(this, 'keyAdmin1', 'BackupAdmin1')
+    const key = new kms.Key(this, `amplify-appsync-${AmplifyHelpers.getProjectInfo().envName}-key`, {
+      removalPolicy: cdk.RemovalPolicy.RETAIN,
+      alias: `alias/amplify-appsync-${AmplifyHelpers.getProjectInfo().envName}-key`,
+      description: 'KMS key for encrypting the objects in an S3 bucket',
+      enableKeyRotation: false,
+      admins: [cdkKeyAdmin, keyAdmin1]
     });
 
     const plan = new backup.BackupPlan(this,
@@ -23,7 +34,25 @@ export class cdkStack extends cdk.Stack {
           backup.BackupPlanRule.monthly1Year()
         ],
         backupVault: new backup.BackupVault(this, 'Vault', {
-          backupVaultName: `amplify-appsync-dyanmodb-valut${AmplifyHelpers.getProjectInfo().envName}`
+          backupVaultName: `amplify-appsync-dyanmodb-valut${AmplifyHelpers.getProjectInfo().envName}`,
+          encryptionKey: key,
+          accessPolicy: new iam.PolicyDocument({
+            statements: [
+              new iam.PolicyStatement({
+                effect: iam.Effect.DENY,
+                principals: [new iam.AnyPrincipal()],
+                actions: ['backup:DeleteRecoveryPoint'],
+                resources: ['*'],
+                conditions: {
+                  StringNotLike: {
+                    'aws:username': [
+                      'BackupAdmin1',
+                    ],
+                  },
+                },
+              }),
+            ],
+          }),
         })
       }
     );

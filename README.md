@@ -60,6 +60,6 @@ You have now successfully enabled backups for your Vue application built with Am
 
 ## Cleanup
 
-To avoid accruing costs associated with this guide, you can remove your Amplify application and all associated resources by running `amplify delete`.
+To avoid accruing costs associated with this guide, you can remove your Amplify application and all associated resources by running `amplify delete`. Note that the AWS Backup vault and restore points will not be deleted automatically so you will need to delete those manually if you'd like to remove those. 
 
 
