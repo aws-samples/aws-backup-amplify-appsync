@@ -14,14 +14,20 @@ export class cdkStack extends cdk.Stack {
       description: 'Current Amplify CLI env name',
     });
 
-    const cdkKeyAdmin = iam.User.fromUserName(this, 'cdkKeyAdmin', 'YOUR_AMPLIFY_USERNAME') // replace with your username
-    const keyAdmin1 = iam.User.fromUserName(this, 'keyAdmin1', 'BackupAdmin1')
+    const cdkKeyAdminRole = iam.Role.from_role_name(this, 'cdkKeyAdminRole', 'YOUR_ROLE_NAME')
+    const backupAdminRole = iam.Role(this, "BackupAdminRole",
+      assumedBy = iam.AccountPrincipal("*")
+    )
+
+    // const cdkKeyAdmin = iam.User.fromUserName(this, 'cdkKeyAdmin', 'YOUR_AMPLIFY_USERNAME') // replace with your username
+    // const keyAdmin1 = iam.User.fromUserName(this, 'keyAdmin1', 'BackupAdmin1')
     const key = new kms.Key(this, `amplify-appsync-${AmplifyHelpers.getProjectInfo().envName}-key`, {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
       alias: `alias/amplify-appsync-${AmplifyHelpers.getProjectInfo().envName}-key`,
       description: 'KMS key for encrypting the objects in your AWS Backup Vault',
       enableKeyRotation: false,
-      admins: [cdkKeyAdmin, keyAdmin1]
+      //admins: [cdkKeyAdmin, keyAdmin1]
+      admins: [backupAdminRole, cdkKeyAdminRole]
     });
 
     const plan = new backup.BackupPlan(this,
@@ -46,7 +52,8 @@ export class cdkStack extends cdk.Stack {
                 conditions: {
                   StringNotLike: {
                     'aws:username': [
-                      'BackupAdmin1',
+                      // backupAdminRole.role_id
+                      'BackupAdminRole',
                     ],
                   },
                 },
