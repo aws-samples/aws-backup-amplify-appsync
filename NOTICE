@@ -1,4 +1,4 @@
-AWS IoT Greengrass Private Networking with AWS PrivateLink
+Automate reliability of AWS Amplify GraphQL backends with AWS Backup
 
 Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved.
 
@@ -7,6 +7,9 @@ THIRD PARTY COMPONENTS
 **********************
 This software includes third party software subject to the following copyrights:
 
-boto3: Apache License Version 2.0
-cdk: Apache License Version 2.0
+aws-amplify/ui-vue: Apache License Version 2.0
+aws-amplify: Apache License Version 2.0
 cdk-nag: Apache License Version 2.0
+bootstrap: MIT
+vue: MIT
+core-js: MIT
