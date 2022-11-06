@@ -17,7 +17,26 @@ To work with this project first be sure you are familiar with [AWS Amplify](http
 Detailed instructions will be available in the upcoming blog which will be linked here as soon as it is published. 
 
 
-You will need to clone the repository for this project, move into project the directory and initialize Amplify after you've installed the required CLI tooling. See the AWS Amplify Vue [ Getting Started](https://docs.amplify.aws/start/getting-started/installation/q/integration/vue/) Prerequisites section to understand how to setup your CLI environment. Your Amplify IAM principle needs to have permissions policies that allow you to create Amplify applications and AWS Backup artifacts. To keep things simple you can add the AWS managed policies "AdministratorAccess-Amplify", "AWSKeyManagementServicePowerUser", and "AWSBackupFullAccess". To get started run the commands below and choose the appropriate AWS profile when prompted. 
+You will need to clone the repository for this project, move into project the directory and initialize Amplify after you've installed the required CLI tooling. See the AWS Amplify Vue [ Getting Started](https://docs.amplify.aws/start/getting-started/installation/q/integration/vue/) Prerequisites section to understand how to setup your CLI environment. Your Amplify IAM principle needs to have permissions policies that allow you to create Amplify applications and AWS Backup artifacts. To keep things simple you can add the AWS managed policies "AdministratorAccess-Amplify", "AWSKeyManagementServicePowerUser", and "AWSBackupFullAccess".  You'll be setting up a custom KMS Customer Managed key which will require you to also add an inline policy to your user (my user name is amplify-backup).
+
+```
+{
+    "Version": "2012-10-17",
+    "Statement": [
+        {
+            "Sid": "VisualEditor0",
+            "Effect": "Allow",
+            "Action": [
+                "iam:PutUserPolicy",
+                "iam:DeleteUserPolicy"
+            ],
+            "Resource": "arn:aws:iam::101453934597:user/amplify-backup"
+        }
+    ]
+}
+```
+
+To get started run the commands below and choose the appropriate AWS profile when prompted.
 
 ```
 git clone git@github.com:aws-samples/aws-backup-amplify-appsync.git
@@ -84,8 +103,9 @@ Stop your web server if it is still running, then in your terminal enter `amplif
 ```
 cp graphql-schema-and-cdk/cdk-stack.ts amplify/backend/custom/backups/cdk-stack.ts
 cp graphql-schema-and-cdk/package.json amplify/backend/custom/backups/package.json
-amplify push
 ```
+
+Now open the file cdk-stack.ts in your edit and review the line `const keyAdmin = iam.User.fromUserName(this, "keyAdmin", "amplify-backup");`. You'll need to change the current username **amplify-backup** to match the iam User name of your user, or follow the instructions in the comments for a role based approach if you're using SSO.
 
 After the push command completes run npm run serve in your terminal. One the application is up and running navigate your browser to http://localhost:8080/. You'll be presented with a Cognito login prompt for your application. Navigate to the Create a new user, confirm it, and login. 
 

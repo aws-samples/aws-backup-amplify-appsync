@@ -1,12 +1,10 @@
-// Copyright Amazon.com, Inc. or its affiliates. All Rights Reserved. 
-// SPDX-License-Identifier: Apache-2.0 
-
 import * as cdk from '@aws-cdk/core';
 import * as AmplifyHelpers from '@aws-amplify/cli-extensibility-helper';
 import { AmplifyDependentResourcesAttributes } from '../../types/amplify-dependent-resources-ref';
 import * as backup from '@aws-cdk/aws-backup';
 import * as kms from '@aws-cdk/aws-kms';
 import * as iam from '@aws-cdk/aws-iam';
+import { RemovalPolicy } from '@aws-cdk/core';
 
 export class cdkStack extends cdk.Stack {
   constructor(scope: cdk.Construct, id: string, props?: cdk.StackProps, amplifyResourceProps?: AmplifyHelpers.AmplifyResourceProps) {
@@ -17,20 +15,63 @@ export class cdkStack extends cdk.Stack {
       description: 'Current Amplify CLI env name',
     });
 
-    const cdkKeyAdminRole = iam.Role.from_role_name(this, 'cdkKeyAdminRole', 'YOUR_ROLE_NAME')
-    const backupAdminRole = iam.Role(this, "BackupAdminRole",
-      assumedBy = iam.AccountPrincipal("*")
-    )
 
-    // const cdkKeyAdmin = iam.User.fromUserName(this, 'cdkKeyAdmin', 'YOUR_AMPLIFY_USERNAME') // replace with your username
-    // const keyAdmin1 = iam.User.fromUserName(this, 'keyAdmin1', 'BackupAdmin1')
+    // update with your username before running amplify push. This must be the same principal that is setup for your amplify profile 
+    // if you are using a federated role, change the code to load that role by name instead of loading a user
+    const keyAdmin = iam.User.fromUserName(this, "keyAdmin", "amplify-backup");
+    // The BackupAdminRole can below assumed principals in your account for which you give the right to assume them
+    // via STS assume role. You'll need to adjust the assumedBy principals to reference roles or users in your account 
+    // and this role can then administer restore points
+    const backupAdmin = new iam.Role(this, "BackupAdminRole",
+      {
+        assumedBy: new iam.AccountPrincipal(cdk.Stack.of(this).account),
+      }
+    )
+    backupAdmin.addManagedPolicy(iam.ManagedPolicy.fromAwsManagedPolicyName("AWSBackupFullAccess"));
+
+
     const key = new kms.Key(this, `amplify-appsync-${AmplifyHelpers.getProjectInfo().envName}-key`, {
       removalPolicy: cdk.RemovalPolicy.RETAIN,
       alias: `alias/amplify-appsync-${AmplifyHelpers.getProjectInfo().envName}-key`,
       description: 'KMS key for encrypting the objects in your AWS Backup Vault',
       enableKeyRotation: false,
-      //admins: [cdkKeyAdmin, keyAdmin1]
-      admins: [backupAdminRole, cdkKeyAdminRole]
+      admins: [backupAdmin, keyAdmin],
+      policy: new iam.PolicyDocument({
+        statements: [
+          new iam.PolicyStatement({
+            actions: [
+              "kms:Create*",
+              "kms:Describe*",
+              "kms:Enable*",
+              "kms:List*",
+              "kms:Put*",
+              "kms:Update*",
+              "kms:Revoke*",
+              "kms:Disable*",
+              "kms:Get*",
+              "kms:Delete*",
+              "kms:ImportKeyMaterial",
+              "kms:TagResource",
+              "kms:UntagResource",
+              "kms:ScheduleKeyDeletion",
+              "kms:CancelKeyDeletion"
+            ],
+            principals: [keyAdmin],
+            resources: ['*'],
+          }),
+          new iam.PolicyStatement({
+            actions: [
+              "kms:Encrypt",
+              "kms:Decrypt",
+              "kms:ReEncrypt*",
+              "kms:GenerateDataKey*",
+              "kms:DescribeKey"
+            ],
+            principals: [backupAdmin],
+            resources: ['*'],
+          })],
+
+      })
     });
 
     const plan = new backup.BackupPlan(this,
@@ -54,9 +95,8 @@ export class cdkStack extends cdk.Stack {
                 resources: ['*'],
                 conditions: {
                   StringNotLike: {
-                    'aws:username': [
-                      // backupAdminRole.role_id
-                      'BackupAdminRole',
+                    'aws:PrincipalArn': [
+                      backupAdmin.roleArn
                     ],
                   },
                 },
