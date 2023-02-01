@@ -1,5 +1,7 @@
 # aws-backup-amplify-appsync
 
+This solution is explained in the companion blog [Automate backups for AWS Amplify GraphQL backends with AWS Backup](https://aws.amazon.com/blogs/storage/automate-backups-for-aws-amplify-graphql-backends-with-aws-backup/)
+
 AWS Amplify makes it easy to build full stack front end UI apps with backends and authentication. AWS AppSync adds serverless GraphQL and DynamoDB tables to your application with no code. This project guides you on how to include the infrastructure as code to add AWS Backup to an Amplify and AppSync application using to manage snapshots for your applications DynamoDB tables. 
 
 See the following Architecture Diagram detailing what this sample solution will deploy.
@@ -13,9 +15,6 @@ To work with this project first be sure you are familiar with [AWS Amplify](http
 
 
 ## Project setup
-
-Detailed instructions will be available in the upcoming blog which will be linked here as soon as it is published. 
-
 
 You will need to clone the repository for this project, move into project the directory and initialize Amplify after you've installed the required CLI tooling. See the AWS Amplify Vue [ Getting Started](https://docs.amplify.aws/start/getting-started/installation/q/integration/vue/) Prerequisites section to understand how to setup your CLI environment. Your Amplify IAM principle needs to have permissions policies that allow you to create Amplify applications and AWS Backup artifacts. To keep things simple you can add the AWS managed policies "AdministratorAccess-Amplify", "AWSKeyManagementServicePowerUser", and "AWSBackupFullAccess".  You'll be setting up a custom KMS Customer Managed key which will require you to also add an inline policy to your user (my user name is amplify-backup).
 
