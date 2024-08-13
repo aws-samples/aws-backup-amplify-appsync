@@ -9,6 +9,7 @@
   },
   "dependencies": {
     "@aws-amplify/ui-vue": "^4.2.10",
+    "@vue/cli": "^5.0.8",
     "aws-amplify": "^6.4.3",
     "bootstrap": "^5.2.0",
     "cdk-nag": "^2.16.1",
@@ -18,9 +19,9 @@
   "devDependencies": {
     "@babel/core": "^7.12.16",
     "@babel/eslint-parser": "^7.12.16",
-    "@vue/cli-plugin-babel": "~5.0.0",
-    "@vue/cli-plugin-eslint": "~5.0.0",
-    "@vue/cli-service": "~5.0.0",
+    "@vue/cli-plugin-babel": "~5.0.8",
+    "@vue/cli-plugin-eslint": "~5.0.8",
+    "@vue/cli-service": "~5.0.8",
     "eslint": "^7.32.0",
     "eslint-plugin-vue": "^8.0.3",
     "jshint": "^2.13.5"
